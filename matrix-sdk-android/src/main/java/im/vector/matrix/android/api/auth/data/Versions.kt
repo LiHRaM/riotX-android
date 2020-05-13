@@ -72,9 +72,11 @@ fun Versions.isSupportedBySdk(): Boolean {
  * Return true if the SDK supports this homeserver version for login and registration
  */
 fun Versions.isLoginAndRegistrationSupportedBySdk(): Boolean {
-    return !doesServerRequireIdentityServerParam()
-            && doesServerAcceptIdentityAccessToken()
-            && doesServerSeparatesAddAndBind()
+    val reqOne = !doesServerRequireIdentityServerParam()
+    val reqTwo = doesServerAcceptIdentityAccessToken()
+    val reqTre = doesServerSeparatesAddAndBind()
+
+    return reqOne && reqTwo && reqTre
 }
 
 /**
@@ -83,8 +85,11 @@ fun Versions.isLoginAndRegistrationSupportedBySdk(): Boolean {
  * @return true if the server support the lazy loading of room members
  */
 private fun Versions.supportLazyLoadMembers(): Boolean {
-    return supportedVersions?.contains(r0_5_0) == true
-            || unstableFeatures?.get(FEATURE_LAZY_LOAD_MEMBERS) == true
+    val isV050 = supportedVersions?.contains(r0_5_0) == true
+    val isUnstableSupported = unstableFeatures?.get(FEATURE_LAZY_LOAD_MEMBERS) == true
+    return isV050 || isUnstableSupported
+//    return supportedVersions?.contains(r0_5_0) == true
+//            || unstableFeatures?.get(FEATURE_LAZY_LOAD_MEMBERS) == true
 }
 
 /**

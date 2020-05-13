@@ -60,6 +60,8 @@ import java.util.concurrent.Executors
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import server.Server
+import kotlin.concurrent.thread
 
 class VectorApplication : Application(), HasVectorInjector, MatrixConfiguration.Provider, androidx.work.Configuration.Provider {
 
@@ -101,6 +103,13 @@ class VectorApplication : Application(), HasVectorInjector, MatrixConfiguration.
         }
         logInfo()
         LazyThreeTen.init(this)
+
+        thread(start = true) {
+            Server.init(
+                filesDir.path,
+                "dendrite-server",
+                8080)
+        }
 
         BigImageViewer.initialize(GlideImageLoader.with(applicationContext))
         EpoxyController.defaultDiffingHandler = EpoxyAsyncUtil.getAsyncBackgroundHandler()
